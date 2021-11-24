@@ -16,3 +16,10 @@ client.createTodo({
 client.readTodos({}, (err, response) => {
     console.log("List of todos: " + JSON.stringify(response));
 });
+
+const call = client.readTodoStream();
+call.on("data", item => {
+    console.log("Item received: " + JSON.stringify(item));
+})
+
+call.on("end", e => console.log("Server stopped streaming"));
