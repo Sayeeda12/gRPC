@@ -14,11 +14,14 @@ server.bindAsync("localhost:4000", grpc.ServerCredentials.createInsecure(),
 server.addService(todoPackage.Todo.service, 
     {
         "createTodo" : createTodo,
-        "readTodos" : readTodos
+        "readTodos" : readTodos,
+        "readTodoStream": readTodoStream
     }
 );
 
 const todoList = [];
+
+//Depicts unary API call
 function createTodo(call, callback) {
     const todoItem = {
         "id": todoList.length + 1,
@@ -28,6 +31,13 @@ function createTodo(call, callback) {
     callback(null, todoItem);
 }
 
+//Depicts unary API call
 function readTodos(call, callback) {
     callback(null, {"items": todoList});
+}
+
+//Depicts client to server streaming API call
+function readTodoStream(call, callback){
+    todoList.forEach(item => call.write(item));
+    call.end();
 }
