@@ -31,12 +31,12 @@ function createTodo(call, callback) {
     callback(null, todoItem);
 }
 
-//Depicts unary API call
+//Depicts unary RPC
 function readTodos(call, callback) {
     callback(null, {"items": todoList});
 }
 
-//Depicts client to server streaming API call
+//Depicts Server streaming RPC
 function readTodoStream(call, callback){
     todoList.forEach(item => call.write(item));
     call.end();
